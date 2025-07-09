@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student medical Management </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-color: #12ac8e;
+            --primary-color-dark: #0e8e73;
+            --primary-color-light: #e9f7f7;
+            --secondary-color: #fb923c;
+            --text-dark: #333333;
+            --text-light: #767268;
+            --white: #ffffff;
+            --max-width: 1200px;
+        }
+        /* Global Styles */
+        body {
+            background: url('https://media.gettyimages.com/id/1312706413/photo/modern-hospital-building.jpg?s=612x612&w=gi&k=20&c=1-EC4Mxf--5u4ItDIzrIOrduXlbKRnbx9xWWtiifrDo=') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header, .nav__container, .section__container, .header__form, .appointment__form, .login__form, .patient-signin__form, .patient-signup__form, .doctor-selection__form, .admin__login, .doctor-login__form, .pharmacy-login__form, .patient-portal, .pharmacy, .receipt {
+            max-width: var(--max-width);
+            margin: auto;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 17px;
+            transition: background-color 0.3s ease;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .btn:hover {
+            background-color: var(--primary-color-dark);
+        }
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes expandCollapse {
+            from {
+                max-height: 0;
+                opacity: 0;
+            }
+            to {
+                max-height: 500px;
+                opacity: 1;
+            }
+        }
+        /* Header Styles */
+        header {
+            background: var(--primary-color);
+            padding: 10px 0;
+        }
+        header .menu img {
+            width: 80px;
+            height: 30px;
+            margin-right: 50px;
+            border: 2px ridge rgba(145, 134, 134, 0.699);
+            margin-top: 2px;
+        }
+        /* Navigation Styles */
+        .nav__container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary-color-light);
+            padding: 10px 20px;
+            border-radius: 5px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .nav__logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .nav__logo span {
+            color: var(--secondary-color);
+        }
+        .nav__links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        .nav__links .link a {
+            color: var(--text-dark);
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .nav__links .link a:hover {
+            color: var(--primary-color);
+        }
+        /* Header Content Styles */
+        .header__container {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        .header__content h1 {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            animation: slideIn 0.8s ease-in-out;
+        }
+        .header__content p {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            animation: slideIn 0.8s ease-in-out;
+        }
+        .header__form,
+        .login__form,
+        .appointment__form,
+        .patient-signin__form,
+        .patient-signup__form,
+        .doctor-selection__form,
+        .appointment__details,
+        .admin__approval__list,
+        .admin__login,
+        .doctor__login,
+        .pharmacy-login__form,
+        .services,
+        .admin-portal,
+        .user-accounts,
+        .patient-login__form,
+        .patient-portal,
+        .pharmacy,
+        .receipt,
+        .doctor-login__form {
+            display: none; /* Initially hidden */
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            animation: expandCollapse 0.5s ease-in-out;
+        }
+        .header__form h4,
+        .login__form h4,
+        .appointment__form h4,
+        .patient-signin__form h4,
+        .patient-signup__form h4,
+        .doctor-selection__form h4,
+        .appointment__details h4,
+        .admin__approval__list h4,
+        .admin__login h4,
+        .doctor__login h4,
+        .pharmacy-login__form h4,
+        .services h4,
+        .admin-portal h4,
+        .user-accounts h4,
+        .patient-login__form h4,
+        .patient-portal h4,
+        .pharmacy h4,
+        .receipt h4,
+        .doctor-login__form h4 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        .header__form input,
+        .header__form label,
+        .login__form input,
+        .login__form label,
+        .appointment__form input,
+        .appointment__form label,
+        .patient-signin__form input,
+        .patient-signin__form label,
+        .patient-signup__form input,
+        .patient-signup__form label,
+        .doctor-selection__form input,
+        .doctor-selection__form label,
+        .appointment__details input,
+        .appointment__details label,
+        .admin__approval__list input,
+        .admin__approval__list label,
+        .admin__login input,
+        .admin__login label,
+        .doctor__login input,
+        .doctor__login label,
+        .pharmacy-login__form input,
+        .pharmacy-login__form label,
+        .patient-login__form input,
+        .patient-login__form label,
+        .patient-portal input,
+        .patient-portal label,
+        .pharmacy input,
+        .pharmacy label,
+        .receipt input,
+        .receipt label,
+        .doctor-login__form label {
+            display: block;
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+        }
+        .header__form input[type="radio"],
+        .login__form input[type="radio"],
+        .appointment__form input[type="radio"],
+        .doctor-selection__form input[type="radio"] {
+            display: inline-block;
+            width: auto;
+            margin-right: 10px;
+        }
+        .header__form .form__btn,
+        .login__form .form__btn,
+        .appointment__form .form__btn,
+        .patient-signin__form .form__btn,
+        .patient-signup__form .form__btn,
+        .doctor-selection__form .form__btn,
+        .appointment__details .form__btn,
+        .admin__approval__list .form__btn,
+        .admin__login .form__btn,
+        .doctor__login .form__btn,
+        .pharmacy-login__form .form__btn,
+        .patient-login__form .form__btn,
+        .patient-portal .form__btn,
+        .pharmacy .form__btn,
+        .receipt .form__btn,
+        .user-accounts .form__btn {
+            background-color: var(--secondary-color);
+            color: var (--white);
+        }
+        /* Admin Actions Styles */
+        .admin__container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .admin-actions {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .admin-actions h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .admin-actions button {
+            margin-top: 10px;
+            width: auto;
+            padding: 10px 20px;
+        }
+        /* Doctor Login Buttons */
+        .doctor-login-buttons {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .doctor-login-buttons h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .doctor-login-buttons button {
+            margin-top: 10px;
+            width: auto;
+            padding: 10px 20px;
+        }
+        .services-buttons button {
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .services-buttons button:hover {
+            background-color: var(--primary-color-dark);
+        }
+        /* General Form Input Styles */
+        input[type="submit"] {
+            background-color: var(--primary-color);
+            color: var (--white);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: var(--primary-color-dark);
+        }
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            display: inline-block;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+        }
+        .container {
+            padding: 16px;
+        }
+        .container::after, .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .text-center {
+            text-align: center;
+        }
+        /* Social Media Styles */
+        .social-media-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .social-media-links a {
+            margin: 0 10px;
+            color: var(--primary-color);
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+        .social-media-links a:hover {
+            color: var(--secondary-color);
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="menu">
+            <img src="https://scontent.fnbo9-1.fna.fbcdn.net/v/t39.30808-6/380798554_320626083795366_3426186937684646461_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGkd3pHWhaGP149EIbYCHrHwT58nYo74YrBPnydijvhiuIOeAi5J0zYaBCjeOFI467AiOvfwHLztCsbTsWBsYiO&_nc_ohc=9lOAv597_L0Q7kNvgFuGArT&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fnbo9-1.fna&oh=00_AYAFEpS2v0J7uDEBBJvWfCB4TMHnP-s9Y1wq8HprlXOVWw&oe=6678BB81" alt="Admin Login Logo">
+        </div>
+        <div class="nav__container">
+            <div class="nav__logo">
+                Student medical management <span>System</span>
+            </div>
+            <ul class="nav__links">
+                <li class="link"><a href="#" id="home-link">Home</a></li>
+                <li class="link"><a href="#" id="admin-link">School Admin Login</a></li>
+                <li class="link"><a href="#" id="doctor-link">School Doctor Login</a></li>
+                <li class="link"><a href="#" id="appointment-link">Appointments section</a></li>
+                <li class="link"><a href="#" id="services-link">Services</a></li>
+                <li class="link"><a href="#" id="patient-link">Patient</a></li>
+                <li class="link"><a href="#" id="pharmacy-link">Pharmacy</a></li>
+                <li class="link"><a href="#" id="contact-link">Contact Us</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="header__container">
+        <div class="header__content">
+            <h1>Welcome to Our Student medical management System</h1>
+            <p> DEAR STUDENT, Your health is our priority. Sign in or register to make an appointment online.</p>
+        </div>
+    </div>
+    <div class="section__container">
+        <!--School Admin Login -->
+        <div class="admin__login">
+            <h4>School Admin Login</h4>
+            <form>
+                <label for="admin-username">Username:</label>
+                <input type="text" id="admin-username" required>
+                <label for="admin-password">Password:</label>
+                <input type="password" id="admin-password" required>
+                <input type="button" value="Login" class="form__btn" id="admin-login-btn">
+            </form>
+        </div>
+        <!-- School Doctor Login -->
+        <div class="doctor__login">
+            <h4>School Doctor Login</h4>
+            <form id="doctor-login-form">
+                <label for="doctor-username">Doctor Type (Username):</label>
+                <select id="doctor-username" required>
+                    <option value="Primary Care Physicians (PCPs)">Primary Care Physicians (PCPs)</option>
+                    <option value="Cardiologists">Cardiologists</option>
+                    <option value="Dermatologists">Dermatologists</option>
+                    <option value="Neurologists">Neurologists</option>
+                    <option value="Pediatricians">Pediatricians</option>
+                    <option value="Radiologists">Radiologists</option>
+                    <option value="Oncologists">Oncologists</option>
+                    <option value="Endocrinologists">Endocrinologists</option>
+                    <option value="Gastroenterologists">Gastroenterologists</option>
+                    <option value="Hematologists">Hematologists</option>
+                    <option value="Nephrologists">Nephrologists</option>
+                    <option value="Ophthalmologists">Ophthalmologists</option>
+                    <option value="Orthopedists">Orthopedists</option>
+                    <option value="Otolaryngologists (ENT)">Otolaryngologists (ENT)</option>
+                    <option value="Pathologists">Pathologists</option>
+                    <option value="Psychiatrists">Psychiatrists</option>
+                    <option value="Pulmonologists">Pulmonologists</option>
+                    <option value="Rheumatologists">Rheumatologists</option>
+                    <option value="Urologists">Urologists</option>
+                    <option value="Anesthesiologists">Anesthesiologists</option>
+                    <option value="Emergency Medicine Doctors">Emergency Medicine Doctors</option>
+                    <option value="General Surgeons">General Surgeons</option>
+                    <option value="Obstetricians/Gynecologists (OB/GYN)">Obstetricians/Gynecologists (OB/GYN)</option>
+                    <option value="Infectious Disease Specialists">Infectious Disease Specialists</option>
+                    <option value="Allergists/Immunologists">Allergists/Immunologists</option>
+                    <option value="Geriatricians">Geriatricians</option>
+                    <option value="Plastic Surgeons">Plastic Surgeons</option>
+                    <option value="Sports Medicine Doctors">Sports Medicine Doctors</option>
+                    <option value="Podiatrists">Podiatrists</option>
+                    <option value="Chiropractors">Chiropractors</option>
+                    <option value="Physiatrists (Physical Medicine and Rehabilitation)">Physiatrists (Physical Medicine and Rehabilitation)</option>
+                    <option value="Occupational Medicine Doctors">Occupational Medicine Doctors</option>
+                    <option value="Public Health Doctors">Public Health Doctors</option>
+                    <option value="Hospitalists">Hospitalists</option>
+                    <option value="Geneticists">Geneticists</option>
+                    <option value="Neonatologists">Neonatologists</option>
+                    <option value="Intensivists/Critical Care Specialists">Intensivists/Critical Care Specialists</option>
+                    <option value="Thoracic Surgeons">Thoracic Surgeons</option>
+                    <option value="Vascular Surgeons">Vascular Surgeons</option>
+                    <option value="Sleep Medicine Specialists">Sleep Medicine Specialists</option>
+                    <option value="Pain Management Doctors">Pain Management Doctors</option>
+                    <option value="Reproductive Endocrinologists">Reproductive Endocrinologists</option>
+                </select>
+                <label for="doctor-password">Password:</label>
+                <input type="password" id="doctor-password" required>
+                <input type="button" value="Login" class="form__btn" id="doctor-login-btn">
+            </form>
+        </div>
+        <!-- Pharmacy Login -->
+        <div class="pharmacy-login__form">
+            <h4>School Pharmacy Login</h4>
+            <form>
+                <label for="pharmacy-username">Username:</label>
+                <input type="text" id="pharmacy-username" required>
+                <label for="pharmacy-password">Password:</label>
+                <input type="password" id="pharmacy-password" required>
+                <input type="button" value="Login" class="form__btn" id="pharmacy-login-btn">
+            </form>
+        </div>
+        <!-- Appointment Form -->
+        <div class="appointment__form">
+            <h4>Make an Appointment</h4>
+            <form id="appointmentForm">
+                <label for="full-name">Full Name:</label>
+                <input type="text" id="full-name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" required>
+                <label for="address">Address:</label>
+                <input type="text" id="address" required>
+                <label for="date">Date:</label>
+                <input type="date" id="date" required>
+                <label for="time">Time:</label>
+                <input type="time" id="time" required>
+                <label for="department">Department:</label>
+                <select id="department" required>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Dermatology">Dermatology</option>
+                    <option value="Neurology">Neurology</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Radiology">Radiology</option>
+                    <option value="Radiology">Emergency</option>
+                    <option value="Pain Management Doctors">Pain Management Doctors</option>
+                    <option value="Reproductive Endocrinologists">Reproductive Endocrinologists</option>
+                    <option value="Vascular Surgeons">Vascular Surgeons</option>
+                  
+                    <option value="Neonatologists">Neonatologists</option>
+                    <option value="Geneticists">Geneticists</option>
+                    <option value="Podiatrists">Podiatrists</option>
+                    <option value="Radiology">other</option>
+                </select>
+                <input type="button" value="Submit" class="form__btn" id="appointment-submit-btn">
+            </form>
+        </div>
+        <!-- Patient Sign-Up Form -->
+        <div class="patient-signup__form">
+            <h4>Student/ Any other Patient Sign-Up</h4>
+            <form>
+                <label for="patient-full-name">Full Name:</label>
+                <input type="text" id="patient-full-name" required>
+                <label for="patient-id-number">ID Number:</label>
+                <input type="text" id="patient-id-number" required>
+                <label for="patient-phone-number">Phone Number:</label>
+                <input type="text" id="patient-phone-number" required>
+                <label for="patient-username">Username:</label>
+                <input type="text" id="patient-username" required>
+                <label for="patient-email">Email:</label>
+                <input type="email" id="patient-email" required>
+                <label for="patient-password">Password:</label>
+                <input type="password" id="patient-password" required>
+                <label for="patient-confirm-password">Confirm Password:</label>
+                <input type="password" id="patient-confirm-password" required>
+                <input type="button" value="Sign Up" class="form__btn" id="patient-signup-btn">
+            </form>
+        </div>
+        <!-- Patient Login Form -->
+        <div class="patient-login__form">
+            <h4>Login if registered</h4>
+            <form>
+                <label for="patient-username-login">Username:</label>
+                <input type="text" id="patient-username-login" required>
+                <label for="patient-password-login">Password:</label>
+                <input type="password" id="patient-password-login" required>
+                <input type="button" value="Login" class="form__btn" id="patient-login-btn">
+            </form>
+        </div>
+        <!-- Patient Portal -->
+        <div class="patient-portal">
+            <h4>Patient Portal</h4>
+            <p>Welcome, <span id="patient-name"></span></p>
+           <label for="patient-describe issue-your sickness issues">describe your issue:</label>
+                <input type="text" id="patient-describe issue-your sickness issues" required>
+                <label for="patient-age-submit">your age:</label>
+                <input type="AGE" id="patient-age-submit" required>
+            <p id="appointment-details"></p>
+            <button class="btn" id="pharmacy-btn">Go to Pharmacy</button>
+        </div>
+        <!-- Pharmacy Section -->
+        <div class="pharmacy">
+            <h4>Patient Payment</h4>
+            <form>
+                <label for="full-name">patient full name:</label>
+                <input type="text" id="full-name" required>
+                <label for="medicine-amount">Amount:</label>
+                <input type="text" id="medicine-amount" required>
+                <label for="mpesa-code">Mpesa Code:</label>
+                <input type="text" id="mpesa-code" required>
+                <input type="button" value="Pay" class="form__btn" id="pharmacy-pay-btn">
+            </form>
+        </div>
+        <!-- Receipt Section -->
+        <div class="receipt">
+            <h4>Payment Receipt</h4>
+            <p>Amount Paid: <span id="paid-amount"></span></p>
+            <p>Mpesa Code: <span id="paid-mpesa-code"></span></p>
+        </div>
+        <!-- Admin Portal -->
+        <div class="admin-portal">
+            <h4>School Admin Portal</h4>
+            <div class="admin__container">
+                <button class="btn" id="approve-patients-btn">Approve Patients</button>
+                <button class="btn" id="view-reports-btn">View Reports</button>
+                <button class="btn" id="manage-users-btn">Manage Users</button>
+                <button class="btn" id="add-new-user-btn">Add New User</button>
+                <button class="btn" id="system-settings-btn">System Settings</button>
+                <button class="btn" id="view-doctors-btn">View Doctors</button>
+            </div>
+        </div>
+        <!-- Approve Patients -->
+        <div class="admin__approval__list">
+            <h4>Approve Patients</h4>
+            <!-- List of patients pending approval (to be populated dynamically) -->
+            <div id="pending-approvals"></div>
+        </div>
+        <!-- Services Section -->
+        <div class="services">
+            <h4>Our Services</h4>
+            <p>We offer a wide range of medical services to ensure you get the best care.</p>
+            <div class="services-buttons">
+                <button>Primary Care</button>
+                <button>Specialty Care</button>
+                <button>Emergency Care</button>
+                <button>Urgent Care</button>
+                <button>Surgical Services</button>
+                <button>Diagnostic Imaging</button>
+                <button>Laboratory Services</button>
+                <button>Pharmacy Services</button>
+                <button>Mental Health Services</button>
+                <button>Rehabilitation Services</button>
+                <button>Home Health Care</button>
+                <button>Long-term Care</button>
+                <button>Hospice and Palliative Care</button>
+                <button>Preventive Care</button>
+                <button>Dental Care</button>
+                <button>Vision Care</button>
+                <button>Audiology Services</button>
+                <button>Maternal and Child Health Services</button>
+                <button>Telehealth Services</button>
+                <button>Health Education and Counseling</button>
+                <button>Nutritional Services</button>
+                <button>Occupational Health Services</button>
+                <button>Public Health Services</button>
+                <button>Blood Bank Services</button>
+                <button>Anesthesia Services</button>
+                <button>Cardiology Services</button>
+                <button>Oncology Services</button>
+                <button>Dermatology Services</button>
+                <button>Endocrinology Services</button>
+                <button>Gastroenterology Services</button>
+            </div>
+        </div>
+        <!-- Contact Us Section -->
+        <div class="contact__info">
+            <h4>Contact Us</h4>
+            <p>For more information, call us at 0713953004</p>
+        </div>
+        <!-- Social Media Links -->
+        <div class="social-media-links">
+            <a href="https://facebook.com" class="fa fa-facebook"></a>
+            <a href="https://twitter.com" class="fa fa-twitter"></a>
+            <a href="https://google.com" class="fa fa-google"></a>
+            <a href="https://whatsapp.com" class="fa fa-whatsapp"></a>
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 Student medical management System. All rights reserved.
+    </footer>
+    <script>
+        // JavaScript to handle the form display logic and data storage
+
+        // Function to show a specific form and hide others
+        function showForm(formClass) {
+            document.querySelectorAll('.section__container > div').forEach(form => {
+                form.style.display = 'none';
+            });
+            document.querySelector('.' + formClass).style.display = 'block';
+        }
+
+        // Event listeners for navigation links
+        document.getElementById('admin-link').addEventListener('click', () => showForm('admin__login'));
+        document.getElementById('doctor-link').addEventListener('click', () => showForm('doctor__login'));
+        document.getElementById('appointment-link').addEventListener('click', () => showForm('appointment__form'));
+        document.getElementById('services-link').addEventListener('click', () => showForm('services'));
+        document.getElementById('patient-link').addEventListener('click', () => showForm('patient-login__form'));
+        document.getElementById('contact-link').addEventListener('click', () => showForm('contact__info'));
+        document.getElementById('pharmacy-link').addEventListener('click', () => showForm('pharmacy-login__form'));
+
+        // Event listener for patient sign-up
+        document.getElementById('patient-signup-btn').addEventListener('click', function () {
+            // Validate form and save data
+            // Integrate your backend logic here
+            alert('Patient signed up successfully.');
+            showForm('patient-login__form');
+        });
+
+        // Event listener for patient login
+        document.getElementById('patient-login-btn').addEventListener('click', function () {
+            // Validate login and fetch patient data
+            // Integrate your backend logic here
+            alert('Patient logged in successfully.');
+            document.getElementById('patient-name').textContent = 'John Doe'; // Fetch this data from backend
+            showForm('patient-portal');
+        });
+
+        // Event listener for admin login
+        document.getElementById('admin-login-btn').addEventListener('click', function () {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            if (username === 'purity' && password === 'admin123') {
+                alert('Admin logged in successfully.');
+                showForm('admin-portal');
+            } else {
+                alert('Invalid admin credentials.');
+            }
+        });
+
+        // Event listener for doctor login
+        document.getElementById('doctor-login-btn').addEventListener('click', function () {
+            const doctorUsername = document.getElementById('doctor-username').value;
+            const doctorPassword = document.getElementById('doctor-password').value;
+            if (doctorPassword === doctorUsername + '2024') {
+                alert('Doctor logged in successfully.');
+                showForm('doctor-selection__form');
+            } else {
+                alert('Invalid doctor credentials.');
+            }
+        });
+
+        // Event listener for pharmacy login
+        document.getElementById('pharmacy-login-btn').addEventListener('click', function () {
+            const pharmacyUsername = document.getElementById('pharmacy-username').value;
+            const pharmacyPassword = document.getElementById('pharmacy-password').value;
+            if (pharmacyUsername === 'pharmacy' && pharmacyPassword === 'pharm123') {
+                alert('Pharmacy logged in successfully.');
+                showForm('pharmacy');
+            } else {
+                alert('Invalid pharmacy credentials.');
+            }
+        });
+
+        // Event listener for making an appointment
+        document.getElementById('appointment-submit-btn').addEventListener('click', function () {
+            const form = document.getElementById('appointmentForm');
+            if (form.checkValidity()) {
+                // Validate form and save appointment data
+                // Integrate your backend logic here
+                alert('Appointment made successfully.');
+                showForm('patient-portal');
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        // Event listener for pharmacy payment
+        document.getElementById('pharmacy-pay-btn').addEventListener('click', function () {
+            // Validate payment details and save payment data
+            // Integrate your backend logic here
+            alert('Payment made successfully.');
+            showForm('receipt');
+            document.getElementById('paid-amount').textContent = document.getElementById('medicine-amount').value;
+            document.getElementById('paid-mpesa-code').textContent = document.getElementById('mpesa-code').value;
+        });
+
+        // Event listener for pharmacy button in patient portal
+        document.getElementById('pharmacy-btn').addEventListener('click', function () {
+            showForm('pharmacy');
+        });
+
+        // Event listener for approving patients
+        document.getElementById('approve-patients-btn').addEventListener('click', function () {
+            // Fetch and display pending approvals
+            // Integrate your backend logic here
+            showForm('admin__approval__list');
+        });
+
+        // Event listener for viewing reports
+        document.getElementById('view-reports-btn').addEventListener('click', function () {
+            // Fetch and display reports
+            // Integrate your backend logic here
+            alert('Viewing reports.');
+        });
+
+        // Event listener for managing users
+        document.getElementById('manage-users-btn').addEventListener('click', function () {
+            // Fetch and display users
+            // Integrate your backend logic here
+            alert('Managing users.');
+        });
+
+        // Event listener for adding new user
+        document.getElementById('add-new-user-btn').addEventListener('click', function () {
+            // Show form to add new user
+            // Integrate your backend logic here
+            alert('Adding new user.');
+        });
+
+        // Event listener for viewing doctors
+        document.getElementById('view-doctors-btn').addEventListener('click', function () {
+            // Fetch and display doctors
+            // Integrate your backend logic here
+            alert('Viewing doctors.');
+        });
+
+        // Default view
+        showForm('header__container');
+    </script>
+</body>
+</html>
